@@ -12,7 +12,7 @@ struct UsersController: RouteCollection {
         let usersRoute = router.grouped("api", "users")
         usersRoute.post(User.self, use: createHandler)
         usersRoute.get(use: getAllHandler)
-        usersRoute.get(use: getHandler)
+        usersRoute.get(User.parameter, use: getHandler)
         usersRoute.get(User.parameter, "acronyms", use: getAcronymsHandler)
     }
     

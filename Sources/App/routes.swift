@@ -69,4 +69,7 @@ public func routes(_ router: Router) throws {
     
     let categoriesController = CategoriesController()
     try router.register(collection: categoriesController)
+    
+    let websiteController = WebsiteController()
+    try router.register(collection: websiteController)
 }
