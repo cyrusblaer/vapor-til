@@ -1,6 +1,6 @@
 import Foundation
 import Vapor
-import FluentSQLite
+import FluentPostgreSQL
 import Authentication
 
 
@@ -15,10 +15,10 @@ final class Token: Codable {
     }
 }
 
-extension Token: SQLiteUUIDModel {}
+extension Token: PostgreSQLUUIDModel {}
 
 extension Token: Migration {
-    static func prepare(on connection: SQLiteConnection) -> Future<Void> {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { (builder) in
             try addProperties(to: builder)
             builder.reference(from: \.userID, to: \User.id)

@@ -7,7 +7,7 @@
 
 import Foundation
 import Vapor
-import FluentSQLite
+import FluentPostgreSQL
 import Authentication
 
 final class User: Codable {
@@ -44,10 +44,10 @@ extension User {
     }
 }
 
-extension User: SQLiteUUIDModel {}
+extension User: PostgreSQLUUIDModel {}
 
 extension User: Migration {
-    static func prepare(on connection: SQLiteConnection) -> Future<Void> {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection, closure: { (builder) in
             try addProperties(to: builder)
             builder.unique(on: \.username)
@@ -90,9 +90,9 @@ extension User: PasswordAuthenticatable {}
 extension User: SessionAuthenticatable {}
 
 struct AdminUser: Migration {
-    typealias Database = SQLiteDatabase
+    typealias Database = PostgreSQLDatabase
     
-    static func prepare(on conn: SQLiteConnection) -> EventLoopFuture<Void> {
+    static func prepare(on conn: PostgreSQLConnection) -> EventLoopFuture<Void> {
         let password = try? BCrypt.hash("password")
         guard let hashedPassword = password else {
             fatalError("Failed to create admin user")
@@ -101,7 +101,7 @@ struct AdminUser: Migration {
         return user.save(on: conn).transform(to: ())
     }
     
-    static func revert(on conn: SQLiteConnection) -> EventLoopFuture<Void> {
+    static func revert(on conn: PostgreSQLConnection) -> EventLoopFuture<Void> {
         return .done(on: conn)
     }
 }

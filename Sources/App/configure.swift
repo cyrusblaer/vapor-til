@@ -1,4 +1,4 @@
-import FluentSQLite
+import FluentPostgreSQL
 import Vapor
 import Leaf
 import Authentication
@@ -6,7 +6,7 @@ import Authentication
 /// Called before your application initializes.
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     /// Register providers first
-    try services.register(FluentSQLiteProvider())
+    try services.register(FluentPostgreSQLProvider())
 
     /// Register routes to the router
     let router = EngineRouter.default()
@@ -20,7 +20,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     middlewares.use(SessionsMiddleware.self)
     services.register(middlewares)
 
-    
+    /**
     // Configure a SQLite database
     let sqlite = try SQLiteDatabase(storage: .memory)
 
@@ -43,8 +43,8 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     try services.register(AuthenticationProvider())
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
     config.prefer(MemoryKeyedCache.self, for: KeyedCache.self)
+    */
     
-    /**
     var databases = DatabasesConfig()
     
     let hostname = Environment.get("DATABASE_HOSTNAME") ?? "localhost"
@@ -78,5 +78,5 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     
     try services.register(LeafProvider())
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
-    */
+    
 }
